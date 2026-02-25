@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>UNCLESTEVECHARTS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body {font-family: Arial; background:#0f172a; color:white; text-align:center;}
+.card {background:#1e293b; padding:20px; margin:20px; border-radius:15px;}
+button {padding:10px 20px; margin:10px; border:none; border-radius:10px;}
+.buy {background:green; color:white;}
+.sell {background:red; color:white;}
+</style>
+</head>
+<body>
+
+<h1>UNCLESTEVECHARTS</h1>
+<h3>Breakout Signal Engine</h3>
+
+<div class="card">
+<select id="pair">
+<option>XAUUSD</option>
+<option>GBPUSD</option>
+<option>EURUSD</option>
+<option>GBPJPY</option>
+<option>NAS100</option>
+<option>BTCUSD</option>
+</select>
+
+<br><br>
+
+Risk:
+<select id="risk">
+<option value="0.01">1%</option>
+<option value="0.02">2%</option>
+</select>
+
+<br><br>
+
+<button onclick="generateSignal()">Generate Signal</button>
+
+<h2 id="signal"></h2>
+<p id="details"></p>
+</div>
+
+<script>
+function generateSignal(){
+
+let balance = 1000;
+let riskPercent = parseFloat(document.getElementById("risk").value);
+let riskAmount = balance * riskPercent;
+
+let direction = Math.random() > 0.5 ? "BUY" : "SELL";
+
+let entry = (Math.random() * 100 + 1000).toFixed(2);
+let atr = (Math.random() * 5 + 2).toFixed(2);
+let slDistance = atr * 1.5;
+let tpDistance = atr * 2.2;
+
+let stopLoss = direction == "BUY" ? 
+(parseFloat(entry) - slDistance).toFixed(2) :
+(parseFloat(entry) + slDistance).toFixed(2);
+
+let takeProfit = direction == "BUY" ?
+(parseFloat(entry) + tpDistance).toFixed(2) :
+(parseFloat(entry) - tpDistance).toFixed(2);
+
+let lotSize = (riskAmount / slDistance / 10).toFixed(2);
+
+document.getElementById("signal").innerHTML = direction;
+document.getElementById("details").innerHTML =
+"Entry: " + entry +
+"<br>Stop Loss: " + stopLoss +
+"<br>Take Profit: " + takeProfit +
+"<br>Lot Size: " + lotSize +
+"<br>Risk: $" + riskAmount;
+}
+</script>
+
+</body>
+</html>
